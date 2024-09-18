@@ -41,9 +41,24 @@ jobs:
       # Step 7: Build the project
       - name: Build the project
         run: npm run build
-      
-      # Step 5: Sync files to S3
+
+      # Step 8: Configure AWS credentials
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v3
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      # Step 9: Deploy to S3 based on the branch
       - name: Deploy to S3
         run: |
-          aws s3 sync ./public s3://fsl-devops-challengerr-${{ github.ref_name }}/ --delete
-      
+          if [ "${{ github.ref_name }}" == "devel" ]; then
+            aws s3 sync ./public s3://fsl-devops-challenger-devel/ --delete
+          elif [ "${{ github.ref_name }}" == "stage" ]; then
+            aws s3 sync ./public s3://fsl-devops-challenger-stage/ --delete
+          elif [ "${{ github.ref_name }}" == "prod" ]; then
+            aws s3 sync ./public s3://fsl-devops-challenger-prod/ --delete
+          else
+            echo "Branch not configured for S3 deployment"
+            exit 1
