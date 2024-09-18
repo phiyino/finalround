@@ -9,7 +9,7 @@ on:
       - devel
       - stage
       - prod
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}  # Only trigger if CI was successful
+    #if: ${{ github.event.workflow_run.conclusion == 'success' }}  # Only trigger if CI was successful
 
 jobs:
   deploy:
