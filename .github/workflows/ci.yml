@@ -54,7 +54,7 @@ jobs:
       - name: Deploy to S3 based on the target branch
         run: |
           if [ "${{ github.base_ref }}" == "devel" ]; then
-            aws s3 sync ./public s3://fsl-devops-challenger-devel/ --delete
+            aws s3 sync ./public s3://fsl-devops-challengerr-devel/ --delete
           elif [ "${{ github.base_ref }}" == "stage" ]; then
             aws s3 sync ./public s3://fsl-devops-challenger-stage/ --delete
           elif [ "${{ github.base_ref }}" == "prod" ]; then
