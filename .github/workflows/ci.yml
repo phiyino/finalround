@@ -51,14 +51,14 @@ jobs:
           aws-region: ${{ secrets.AWS_REGION }}
 
       # Step 9: Deploy to S3 based on the branch
-      - name: Deploy to S3
+      - name: Deploy to S3 based on the target branch
         run: |
-          if [ "${{ github.ref_name }}" == "devel" ]; then
+          if [ "${{ github.base_ref }}" == "devel" ]; then
             aws s3 sync ./public s3://fsl-devops-challenger-devel/ --delete
-          elif [ "${{ github.ref_name }}" == "stage" ]; then
+          elif [ "${{ github.base_ref }}" == "stage" ]; then
             aws s3 sync ./public s3://fsl-devops-challenger-stage/ --delete
-          elif [ "${{ github.ref_name }}" == "prod" ]; then
+          elif [ "${{ github.base_ref }}" == "prod" ]; then
             aws s3 sync ./public s3://fsl-devops-challenger-prod/ --delete
           else
             echo "Branch not configured for S3 deployment"
-            exit 1
+          exit 1
