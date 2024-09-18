@@ -41,3 +41,32 @@ jobs:
       # Step 7: Build the project
       - name: Build the project
         run: npm run build
+
+      # Step 2: Set up environment variable for Terraform directory
+      - name: Set up environment variable for Terraform directory
+        run: |
+          if [ "${{ github.ref_name }}" == "stage" ]; then
+            echo "TF_ENV=stage" >> $GITHUB_ENV
+          elif [ "${{ github.ref_name }}" == "prod" ]; then
+            echo "TF_ENV=prod" >> $GITHUB_ENV
+          elif [ "${{ github.ref_name }}" == "devel" ]; then
+            echo "TF_ENV=devel" >> $GITHUB_ENV
+          else
+            echo "Unknown branch, failing..."
+            exit 1
+
+      # Step 3: Set up Terraform CLI
+      - name: Set up Terraform
+        uses: hashicorp/setup-terraform@v2
+
+      # Step 4: Change the working directory to the correct environment folder
+      - name: Change directory to environment folder
+        run: cd ${{ env.TF_ENV }}
+
+      # Step 5: Initialize Terraform
+      - name: Initialize Terraform
+        run: terraform init
+
+      # Step 6: Apply Terraform with the correct variable file
+      - name: Terraform Apply
+        run: terraform apply -auto-approve -var-file=terraform.tfvars
