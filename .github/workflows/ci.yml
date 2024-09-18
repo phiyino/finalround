@@ -61,4 +61,4 @@ jobs:
             aws s3 sync ./public s3://fsl-devops-challenger-prod/ --delete
           else
             echo "Branch not configured for S3 deployment"
-          exit 1
+            exit 1
