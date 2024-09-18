@@ -1,0 +1,43 @@
+name: Node.js CI Pipeline
+
+on:
+  pull_request:
+    branches:
+      - devel
+      - stage
+      - prod
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Checkout the repository
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      # Step 2: Set up Node.js version
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 15.5.1
+
+      # Step 3: Install dependencies
+      - name: Install dependencies
+        run: npm install && npm install --save-dev prettier
+
+      # Step 4: Run ESLint
+      - name: Run linter
+        run: npm run lint
+
+      # Step 5: Run Prettier (Auto-fix)
+      - name: Run Prettier auto-fix
+        run: npx prettier --write .
+
+      # Step 6: Run tests with Jest
+      - name: Run tests
+        run: CI=true npm run test
+
+      # Step 7: Build the project
+      - name: Build the project
+        run: npm run build
