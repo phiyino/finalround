@@ -1,5 +1,5 @@
 resource "aws_s3_bucket" "this" {
-  bucket = "fsl-devops-challengerr-${var.env}"
+  bucket = "fsl-devops-challengerrrrrr-${var.env}"
 }
 
 resource "aws_s3_bucket_ownership_controls" "example" {
@@ -42,4 +42,12 @@ resource "aws_s3_bucket_policy" "this" {
       }
     ]
   })
+}
+
+resource "aws_s3_bucket_website_configuration" "example" {
+  bucket = aws_s3_bucket.this.id
+
+  index_document {
+    suffix = "index.html"
+  }
 }

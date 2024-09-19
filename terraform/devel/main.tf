@@ -4,9 +4,9 @@ provider "aws" {
 
 terraform {
   backend "s3" {
-    bucket = "smartloto-terraformstate"
+    bucket = "mys3demopolicy"
     key    = "infra/terraform.tfstate"
-    region = "us-east-1"
+    region = "us-west-2"
   }
 }
 
